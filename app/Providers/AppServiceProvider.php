@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use App\Concretions\IndexLocationKm;
-use App\Concretions\IndexLocationMi;
-use App\Enums\UnitEnum;
+use App\Factories\IndexLocationFactory;
+use App\Interfaces\IndexLocationInterface;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,8 +14,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind('index_location_'.UnitEnum::KILOMETERS->value, IndexLocationKm::class);
-        $this->app->bind('index_location_'.UnitEnum::MILES->value, IndexLocationMi::class);
+        $this->app->bind(IndexLocationInterface::class, function (Application $app) {
+            $unit = request()->query('unit', 'km');
+
+            return IndexLocationFactory::make($unit);
+        });
     }
 
     /**
