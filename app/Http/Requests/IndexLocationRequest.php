@@ -15,9 +15,9 @@ class IndexLocationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
-            'radius' => 'required|numeric',
+            'latitude' => 'required|numeric|between:-90,90',
+            'longitude' => 'required|numeric|between:-180,180',
+            'radius' => 'required|numeric|min:0',
             'unit' => 'required|in:'.implode(',', array_column(UnitEnum::cases(), 'value')),
         ];
     }
