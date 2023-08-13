@@ -5,7 +5,7 @@ namespace App\Concretions;
 use App\Interfaces\IndexLocationInterface;
 use App\Models\Location;
 
-class KilometerLocationConcretion implements IndexLocationInterface
+class IndexLocationKm implements IndexLocationInterface
 {
     public function getLocations($latitude, $longitude, $radius)
     {
