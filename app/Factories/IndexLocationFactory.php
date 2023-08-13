@@ -12,9 +12,9 @@ class IndexLocationFactory
     public static function create(string $unit): IndexLocationInterface
     {
         switch ($unit) {
-            case UnitEnum::KILOMETERS:
+            case UnitEnum::KILOMETERS->value:
                 return new IndexLocationKm();
-            case UnitEnum::MILES:
+            case UnitEnum::MILES->value:
                 return new IndexLocationMi();
             default:
                 throw new \Exception('Invalid unit');
