@@ -133,4 +133,28 @@ class IndexLocationFeatureTest extends TestCase
             'longitude' => '-1.9664908260319520',
         ]);
     }
+
+    /**
+     * @test
+     */
+    public function invalid_unit()
+    {
+        // given
+        $parameters = [
+            'latitude' => 51.603983853765925,
+            'longitude' => -1.966490826031952,
+            'radius' => 1,
+            'unit' => 'lightyears',
+        ];
+
+        // when
+        $response = $this->get(route('locations.index', $parameters));
+
+        // then
+        $response->assertStatus(302);
+
+        $response->assertSessionHasErrors([
+            'unit' => 'The selected unit is invalid.',
+        ]);
+    }
 }
