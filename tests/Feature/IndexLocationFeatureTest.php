@@ -2,10 +2,15 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class IndexLocationFeatureTest extends TestCase
 {
+    use RefreshDatabase;
+
+    public $seed = true;
+
     /**
      * @test
      */
