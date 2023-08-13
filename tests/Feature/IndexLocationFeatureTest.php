@@ -57,7 +57,6 @@ class IndexLocationFeatureTest extends TestCase
      */
     public function get_museum_inn()
     {
-        $this->markTestSkipped();
         // given
         $parameters = [
             'latitude' => 51.603983853765925,
@@ -90,7 +89,7 @@ class IndexLocationFeatureTest extends TestCase
         $response->assertJsonFragment([
             'name' => 'Museum Inn',
             'latitude' => '51.603983853765925',
-            'longitude' => '-1.966490826031952',
+            'longitude' => '-1.9664908260319520',
         ]);
     }
 }
