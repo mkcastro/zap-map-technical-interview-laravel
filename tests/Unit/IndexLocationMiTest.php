@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Enums\UnitEnum;
+use App\Concretions\IndexLocationMi;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -21,7 +21,7 @@ class IndexLocationMiTest extends TestCase
         $latitude = 51.475603934275675;
         $longitude = -2.3807167145198114;
         $radius = 1;
-        $indexer = app('index_location_'.UnitEnum::MILES->value);
+        $indexer = new IndexLocationMi();
 
         // when
         $locations = $indexer->getLocations($latitude, $longitude, $radius);
@@ -43,7 +43,7 @@ class IndexLocationMiTest extends TestCase
         $latitude = 51.603983853765925;
         $longitude = -1.966490826031952;
         $radius = 1;
-        $indexer = app('index_location_'.UnitEnum::MILES->value);
+        $indexer = new IndexLocationMi();
 
         // when
         $locations = $indexer->getLocations($latitude, $longitude, $radius);
