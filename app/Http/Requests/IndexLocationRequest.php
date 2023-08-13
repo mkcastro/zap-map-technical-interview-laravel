@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\UnitEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class IndexLocationRequest extends FormRequest
@@ -25,7 +26,7 @@ class IndexLocationRequest extends FormRequest
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'radius' => 'required|numeric',
-            'unit' => 'required|in:km,mi',
+            'unit' => 'required|in:'.implode(',', array_column(UnitEnum::cases(), 'value')),
         ];
     }
 }
