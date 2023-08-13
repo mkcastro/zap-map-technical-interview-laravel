@@ -4,6 +4,6 @@ namespace App\Enums;
 
 enum UnitEnum: string
 {
-    case km = 'km';
-    case mi = 'mi';
+    case KILOMETERS = 'km';
+    case MILES = 'mi';
 }
