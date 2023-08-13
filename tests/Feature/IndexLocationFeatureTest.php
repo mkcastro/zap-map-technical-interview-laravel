@@ -55,7 +55,7 @@ class IndexLocationFeatureTest extends TestCase
     /**
      * @test
      */
-    public function get_museum_inn()
+    public function get_museum_inn_km()
     {
         // given
         $parameters = [
@@ -63,6 +63,47 @@ class IndexLocationFeatureTest extends TestCase
             'longitude' => -1.966490826031952,
             'radius' => 1,
             'unit' => 'km',
+        ];
+
+        // when
+        $response = $this->get(route('locations.index', $parameters));
+
+        // then
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'name',
+                    'latitude',
+                    'longitude',
+                    'created_at',
+                    'updated_at',
+                ],
+            ],
+        ]);
+
+        $response->assertJsonCount(1, 'data');
+
+        $response->assertJsonFragment([
+            'name' => 'Museum Inn',
+            'latitude' => '51.603983853765925',
+            'longitude' => '-1.9664908260319520',
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function get_museum_inn_mi()
+    {
+        // given
+        $parameters = [
+            'latitude' => 51.603983853765925,
+            'longitude' => -1.966490826031952,
+            'radius' => 1,
+            'unit' => 'mi',
         ];
 
         // when
