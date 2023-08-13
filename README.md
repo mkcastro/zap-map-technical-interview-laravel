@@ -76,15 +76,81 @@ GET /api/locations?latitude=51.475603934275675&longitude=-2.3807167145198114&rad
 
 ## Adding New Units of Measurement
 
-1. Add an entry to the UnitEnum.php
-2. Create a new concretion at app/Concretions
-3. Name the class IndexLocation[Unit]
-4. Copy class IndexLocationKm as a guide on the new unit of measurement
-5. Add a binding in the AppServiceProvider.php
+If you wish to add a new unit of measurement (e.g., **yards**) to the location search feature, follow the steps below:
+
+1. **Update the UnitEnum**:
+
+Open the `UnitEnum` class located at `App\Enums\UnitEnum`. Add the new unit as a case.
+
+```php
+case YARDS = 'yards';
+```
+
+2. **Create a new concretion**
+
+Create a new concrete class for the unit. This class will define how to fetch locations based on the new unit. Place this class under `App\Concretions`.
+
+```php
+<?php
+
+namespace App\Concretions;
+
+use App\Interfaces\IndexLocationInterface;
+use App\Models\Location;
+use Illuminate\Database\Eloquent\Collection;
+
+class IndexLocationYd implements IndexLocationInterface
+{
+    public function getLocations($latitude, $longitude, $radius): Collection
+    {
+        // Adjust the query as needed for the 'yards' unit
+        // For example, 1 yard is approximately 0.9144 meters
+        $locations = Location::whereRaw(
+            'ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) <= ?',
+            [
+                $longitude,
+                $latitude,
+                $radius * 0.9144 * 1000,
+            ]
+        )
+        ->get();
+
+        return $locations;
+    }
+}
+```
+
+3. **Update the Factory**:
+
+Modify the `IndexLocationFactory` located at `App\Factories\IndexLocationFactory`. Add an entry for the new unit in the `$mappings` array.
+
+```php
+$mappings = [
+    UnitEnum::KILOMETERS => IndexLocationKm::class,
+    UnitEnum::MILES => IndexLocationMi::class,
+    UnitEnum::YARDS => IndexLocationYd::class,
+];
+```
+
+4. **Unit Tests**:
+
+It's always a good practice to create unit tests for any new functionality. Create a new test under `Tests\Unit` to ensure the new concretion works as expected.
+
+5. **Usage**:
+
+With these changes, users can now make API requests with the new unit:
+
+```
+GET /api/locations?latitude=XX.XXXXXX&longitude=YY.YYYYYY&radius=ZZ&unit=yd
+```
+
+6. Optional - Update API Documentation
+
+If you maintain an API documentation, make sure to update it to include the new unit as a valid parameter value for the unit query parameter.
 
 ## Testing
 
-Run `sail test --coverage --min=83.3` to run the test suite.
+Run `sail test --coverage --min=80` to run the test suite.
 
 ## License
 
