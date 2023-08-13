@@ -18,6 +18,7 @@ class LocationSeeder extends Seeder
         $rows = array_map('str_getcsv', explode("\n", $csv));
 
         $data = [];
+        $now = now();
 
         foreach ($rows as $row) {
             if (count($row) !== 3) {
@@ -33,6 +34,8 @@ class LocationSeeder extends Seeder
                 'name' => $row[0],
                 'latitude' => $row[1],
                 'longitude' => $row[2],
+                'created_at' => $now,
+                'updated_at' => $now,
             ];
         }
 
