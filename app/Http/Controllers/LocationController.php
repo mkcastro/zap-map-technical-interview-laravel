@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Factories\IndexLocationFactory;
 use App\Http\Requests\IndexLocationRequest;
 use App\Http\Requests\StoreLocationRequest;
 use App\Http\Requests\UpdateLocationRequest;
@@ -16,9 +17,15 @@ class LocationController extends Controller
      */
     public function index(IndexLocationRequest $request): JsonResource
     {
-        $locations = [
-            Location::first(),
-        ];
+        $data = $request->validated();
+
+        $indexer = IndexLocationFactory::create($data['unit']);
+
+        $locations = $indexer->getLocations(
+            $data['latitude'],
+            $data['longitude'],
+            $data['radius']
+        );
 
         $transformedLocations = LocationResource::collection($locations);
 
