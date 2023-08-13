@@ -4,20 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLocationRequest;
 use App\Http\Requests\UpdateLocationRequest;
+use App\Http\Resources\LocationResource;
 use App\Models\Location;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class LocationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResource
     {
-        return [
-            'data' => [
-                Location::first(),
-            ],
+        $locations = [
+            Location::first(),
         ];
+
+        $transformedLocations = LocationResource::collection($locations);
+
+        return $transformedLocations;
     }
 
     /**
