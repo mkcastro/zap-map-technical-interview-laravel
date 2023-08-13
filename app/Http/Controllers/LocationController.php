@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Factories\IndexLocationFactory;
 use App\Http\Requests\IndexLocationRequest;
 use App\Http\Resources\LocationResource;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -16,7 +15,7 @@ class LocationController extends Controller
     {
         $data = $request->validated();
 
-        $indexer = IndexLocationFactory::create($data['unit']);
+        $indexer = app('index_location_'.$data['unit']);
 
         $locations = $indexer->getLocations(
             $data['latitude'],
