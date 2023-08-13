@@ -6,6 +6,7 @@ use App\Concretions\IndexLocationKm;
 use App\Concretions\IndexLocationMi;
 use App\Enums\UnitEnum;
 use App\Interfaces\IndexLocationInterface;
+use InvalidArgumentException;
 
 class IndexLocationFactory
 {
@@ -17,7 +18,7 @@ class IndexLocationFactory
             case UnitEnum::MILES->value:
                 return new IndexLocationMi();
             default:
-                throw new \Exception('Invalid unit');
+                throw new InvalidArgumentException('Invalid unit');
         }
     }
 }
