@@ -24,6 +24,11 @@ class LocationSeeder extends Seeder
                 continue;
             }
 
+            // if name is existing in $data, skip
+            if (in_array($row[0], array_column($data, 'name'))) {
+                continue;
+            }
+
             $data[] = [
                 'name' => $row[0],
                 'latitude' => $row[1],
