@@ -80,7 +80,7 @@ GET /api/locations?latitude=51.475603934275675&longitude=-2.3807167145198114&rad
 2. Create a new concretion at app/Concretions
 3. Name the class IndexLocation[Unit]
 4. Copy class IndexLocationKm as a guide on the new unit of measurement
-5. Add a new case to the IndexLocationFactory
+5. Add a binding in the AppServiceProvider.php
 
 ## Testing
 
