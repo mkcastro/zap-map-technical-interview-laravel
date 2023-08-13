@@ -48,6 +48,16 @@ services:
                 - '-p${DB_PASSWORD}'
             retries: 3
             timeout: 5s
+    phpmyadmin:
+        image: phpmyadmin
+        ports:
+            - ${PHP_MY_ADMIN_PORT:-8000}:80
+        links:
+            - "mysql:db"
+        depends_on:
+            - mysql
+        networks:
+            - sail
 networks:
     sail:
         driver: bridge
