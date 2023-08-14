@@ -1,6 +1,6 @@
 # Zap-Map Location API
 
-Welcome to the Zap-Map Location API project! This project aims to provide a RESTful API endpoint for retrieving location points within a specified radius based on latitude and longitude.
+Welcome to the Zap-Map Location API project. This API offers an endpoint for fetching location points within a given radius based on provided latitude and longitude.
 
 ## Table of Contents
 
@@ -13,11 +13,11 @@ Welcome to the Zap-Map Location API project! This project aims to provide a REST
 -   [Contributing](#contributing)
 -   [Adding New Units of Measurement](#adding-new-units-of-measurement)
     -   [Update the UnitEnum](#update-the-unitenum)
-    -   [Create a new concretion](#create-a-new-concretion)
+    -   [Create a New Concretion](#create-a-new-concretion)
     -   [Update the Factory](#update-the-factory)
     -   [Unit Tests](#unit-tests)
     -   [Usage](#usage)
-    -   [Optional - Update API Documentation](#optional---update-api-documentation)
+-   [Testing](#testing)
 -   [License](#license)
 
 ## Getting Started
@@ -31,9 +31,25 @@ Welcome to the Zap-Map Location API project! This project aims to provide a REST
 
 1. Clone this repository to your local machine.
 2. Navigate to the project directory.
-3. Run `docker run --rm -u "$(id -u):$(id -g)" -v "$(pwd):/var/www/html" -w /var/www/html laravelsail/php82-composer:latest composer install --ignore-platform-reqs` to install project dependencies.
-4. Setup the environment file: `cp .env.example .env`.
-5. Generate an application key: `docker run --rm -u "$(id -u):$(id -g)" -v "$(pwd):/var/www/html" -w /var/www/html laravelsail/php82-composer:latest php artisan key:generate`.
+3. Execute the following command to install project dependencies:
+    ```bash
+    docker run --rm \
+        -u "$(id -u):$(id -g)" \
+        -v "$(pwd):/var/www/html" \
+        -w /var/www/html \
+        laravelsail/php82-composer:latest \
+        composer install --ignore-platform-reqs
+    ```
+4. Configure the environment file: `cp .env.example .env`.
+5. Generate the application key:
+    ```bash
+    docker run --rm \
+        -u "$(id -u):$(id -g)" \
+        -v "$(pwd):/var/www/html" \
+        -w /var/www/html \
+        laravelsail/php82-composer:latest \
+        php artisan key:generate
+    ```
 6. Build the Docker containers: `./vendor/bin/sail up --build`.
 7. Start the Docker containers: `./vendor/bin/sail up -d`.
 8. Seed the database with sample data: `./vendor/bin/sail migrate:fresh --seed`.
@@ -42,19 +58,22 @@ Welcome to the Zap-Map Location API project! This project aims to provide a REST
 
 ### Endpoint
 
-The API endpoint for location retrieval is: `/api/locations`
+Use the `/api/locations` endpoint for retrieving locations.
 
 ### Parameters
 
-The endpoint accepts the following parameters:
+The following parameters are accepted:
 
--   `latitude` (float): The latitude of the center point.
--   `longitude` (float): The longitude of the center point.
--   `radius` (float): The radius in kilometers for the search area.
--   `unit` (string): The unit of measurement for the radius. Accepted values are `km` (kilometers) and `mi` (miles).
+-   `latitude` (float): Central point latitude.
+-   `longitude` (float): Central point longitude.
+-   `radius` (float): Search radius in kilometers.
+-   `unit` (string): Measurement unit for radius. Allowed values: `km` (kilometers) and `mi` (miles).
 
 **Example Request:**
+
+```
 GET /api/locations?latitude=51.475603934275675&longitude=-2.3807167145198114&radius=1&unit=km
+```
 
 **Example Response:**
 
@@ -83,19 +102,19 @@ GET /api/locations?latitude=51.475603934275675&longitude=-2.3807167145198114&rad
 
 ## Adding New Units of Measurement
 
-If you wish to add a new unit of measurement (e.g., **yards**) to the location search feature, follow the steps below:
+To add a new measurement unit (e.g., **yards**) for the location search:
 
-### Update the UnitEnum:
+### Update the UnitEnum
 
-Open the `UnitEnum` class located at `App\Enums\UnitEnum`. Add the new unit as a case.
+Navigate to `App\Enums\UnitEnum` and add the new unit:
 
 ```php
-case YARDS = 'yards';
+case YARDS = 'yd';
 ```
 
-### Create a new concretion:
+### Create a New Concretion
 
-Create a new concrete class for the unit. This class will define how to fetch locations based on the new unit. Place this class under `App\Concretions`.
+Develop a new concrete class for the unit under `App\Concretions`:
 
 ```php
 <?php
@@ -127,38 +146,37 @@ class IndexLocationYd implements IndexLocationInterface
 }
 ```
 
-### Update the Factory:
+### Update the Factory
 
-Modify the `IndexLocationFactory` located at `App\Factories\IndexLocationFactory`. Add an entry for the new unit in the `$mappings` array.
+In `App\Factories\IndexLocationFactory`, add an entry for the new unit in the `$mappings` array:
 
 ```php
 $mappings = [
-    UnitEnum::KILOMETERS => IndexLocationKm::class,
-    UnitEnum::MILES => IndexLocationMi::class,
+    // Existing mappings...
     UnitEnum::YARDS => IndexLocationYd::class,
 ];
 ```
 
-### Unit Tests:
+### Unit Tests
 
-It's always a good practice to create unit tests for any new functionality. Create a new test under `Tests\Unit` to ensure the new concretion works as expected.
+For new functionality, ensure you have unit tests. Add a test in `Tests\Unit`.
 
-### Usage:
+### Usage
 
-With these changes, users can now make API requests with the new unit:
+Now, users can send API requests using the new unit:
 
 ```
 GET /api/locations?latitude=XX.XXXXXX&longitude=YY.YYYYYY&radius=ZZ&unit=yd
 ```
 
-### Optional - Update API Documentation:
-
-If you maintain an API documentation, make sure to update it to include the new unit as a valid parameter value for the unit query parameter.
-
 ## Testing
 
-Run `sail test --coverage --min=80` to run the test suite.
+Execute the test suite with the following:
+
+```bash
+sail test --coverage --min=80
+```
 
 ## License
 
-This project is licensed under the MIT License.
+This project falls under the MIT License.
