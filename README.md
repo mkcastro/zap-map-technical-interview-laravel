@@ -121,27 +121,12 @@ Develop a new concrete class for the unit under `App\Concretions`:
 
 namespace App\Concretions;
 
-use App\Interfaces\IndexLocationInterface;
-use App\Models\Location;
-use Illuminate\Database\Eloquent\Collection;
-
-class IndexLocationYd implements IndexLocationInterface
+class IndexLocationYd extends AbstractIndexLocation
 {
-    public function getLocations($latitude, $longitude, $radius): Collection
+    protected function getConversionFactor(): float
     {
-        // Adjust the query as needed for the 'yards' unit
-        // For example, 1 yard is approximately 0.9144 meters
-        $locations = Location::whereRaw(
-            'ST_Distance_Sphere(point(longitude, latitude), point(?, ?)) <= ?',
-            [
-                $longitude,
-                $latitude,
-                $radius * 0.9144 * 1000,
-            ]
-        )
-        ->get();
-
-        return $locations;
+        // For yards, 1 yard is approximately 0.9144 meters
+        return 0.9144 * 1000;
     }
 }
 ```
