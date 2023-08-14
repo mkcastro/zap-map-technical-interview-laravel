@@ -11,6 +11,13 @@ Welcome to the Zap-Map Location API project! This project aims to provide a REST
     -   [Endpoint](#endpoint)
     -   [Parameters](#parameters)
 -   [Contributing](#contributing)
+-   [Adding New Units of Measurement](#adding-new-units-of-measurement)
+    -   [Update the UnitEnum](#update-the-unitenum)
+    -   [Create a new concretion](#create-a-new-concretion)
+    -   [Update the Factory](#update-the-factory)
+    -   [Unit Tests](#unit-tests)
+    -   [Usage](#usage)
+    -   [Optional - Update API Documentation](#optional---update-api-documentation)
 -   [License](#license)
 
 ## Getting Started
@@ -78,7 +85,7 @@ GET /api/locations?latitude=51.475603934275675&longitude=-2.3807167145198114&rad
 
 If you wish to add a new unit of measurement (e.g., **yards**) to the location search feature, follow the steps below:
 
-1. **Update the UnitEnum**:
+### Update the UnitEnum:
 
 Open the `UnitEnum` class located at `App\Enums\UnitEnum`. Add the new unit as a case.
 
@@ -86,7 +93,7 @@ Open the `UnitEnum` class located at `App\Enums\UnitEnum`. Add the new unit as a
 case YARDS = 'yards';
 ```
 
-2. **Create a new concretion**
+### Create a new concretion:
 
 Create a new concrete class for the unit. This class will define how to fetch locations based on the new unit. Place this class under `App\Concretions`.
 
@@ -120,7 +127,7 @@ class IndexLocationYd implements IndexLocationInterface
 }
 ```
 
-3. **Update the Factory**:
+### Update the Factory:
 
 Modify the `IndexLocationFactory` located at `App\Factories\IndexLocationFactory`. Add an entry for the new unit in the `$mappings` array.
 
@@ -132,11 +139,11 @@ $mappings = [
 ];
 ```
 
-4. **Unit Tests**:
+### Unit Tests:
 
 It's always a good practice to create unit tests for any new functionality. Create a new test under `Tests\Unit` to ensure the new concretion works as expected.
 
-5. **Usage**:
+### Usage:
 
 With these changes, users can now make API requests with the new unit:
 
@@ -144,7 +151,7 @@ With these changes, users can now make API requests with the new unit:
 GET /api/locations?latitude=XX.XXXXXX&longitude=YY.YYYYYY&radius=ZZ&unit=yd
 ```
 
-6. Optional - Update API Documentation
+### Optional - Update API Documentation:
 
 If you maintain an API documentation, make sure to update it to include the new unit as a valid parameter value for the unit query parameter.
 
